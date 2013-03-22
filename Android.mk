@@ -1,11 +1,10 @@
-#Enables the listed display HAL modules
-#libs to be built for QCOM targets only
-
 ifeq ($(call is-vendor-board-platform,QCOM),true)
-display-hals := libgralloc libgenlock libcopybit liblight
-display-hals += libhwcomposer liboverlay libqdutils
+ifeq ($(TARGET_QCOM_DISPLAY_VARIANT),legacy)
+display-hals := libgralloc libgenlock libcopybit
+display-hals += libhwcomposer liboverlay libqdutils libtilerenderer
+ifneq ($(TARGET_PROVIDES_LIBLIGHT),true)
+display-hals += liblight
 endif
-
-display-hals += libtilerenderer
-
+endif
 include $(call all-named-subdir-makefiles,$(display-hals))
+endif
